@@ -251,7 +251,7 @@ export function ProjectGrid() {
   }
 
   return (
-    <div className="w-full space-y-32">
+    <div className="w-full space-y-20">
       <div className="flex flex-wrap items-center justify-center gap-6">
         {categories.map((cat) => (
           <Magnetic key={cat}>

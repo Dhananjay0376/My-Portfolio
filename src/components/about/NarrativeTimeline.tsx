@@ -45,7 +45,7 @@ export function NarrativeTimeline() {
         />
       </div>
 
-      <div className="space-y-40 relative z-10">
+      <div className="space-y-24 relative z-10">
         {timelineEvents.map((event, index) => {
           const isEven = index % 2 === 0;
           return (
