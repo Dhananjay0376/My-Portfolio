@@ -49,7 +49,7 @@ export function NarrativeTimeline() {
         {timelineEvents.map((event, index) => {
           const isEven = index % 2 === 0;
           return (
-            <div key={event.year} className="relative flex flex-col md:flex-row items-center gap-12">
+            <div key={event.year} className={`relative flex flex-col md:flex-row items-center gap-12 ${!isEven ? "md:flex-row-reverse" : ""}`}>
               {/* Year Badge */}
               <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-full bg-background border border-white/10 z-20 group">
                 <div className="absolute inset-2 rounded-full border border-primary/20 group-hover:border-primary transition-colors duration-500" />
@@ -58,7 +58,7 @@ export function NarrativeTimeline() {
 
               <div className={`flex-1 w-full flex ${isEven ? "md:justify-end" : "md:justify-start"}`}>
                 <motion.div
-                  initial={{ opacity: 0, x: isEven ? 50 : -50 }}
+                  initial={{ opacity: 0, x: isEven ? -50 : 50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
