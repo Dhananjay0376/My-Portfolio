@@ -62,7 +62,7 @@ const RobotModel = memo(function RobotModel() {
   return (
     <group ref={groupRef}>
       <Center>
-        <primitive object={obj} scale={1.6} />
+        <primitive object={obj} scale={1.1} />
       </Center>
     </group>
   );
@@ -79,7 +79,7 @@ export const BotAvatar = memo(function BotAvatar({ onClick }: BotAvatarProps) {
 
   return (
     <div 
-      className="fixed bottom-8 right-8 w-64 h-80 z-[99999] overflow-visible pointer-events-auto cursor-pointer"
+      className="fixed bottom-4 right-4 w-40 h-48 z-[99999] overflow-visible pointer-events-auto cursor-pointer"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
