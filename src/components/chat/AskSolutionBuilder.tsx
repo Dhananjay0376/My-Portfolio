@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MessageSquare, X, Send, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { BotAvatar } from "./BotAvatar";
 
 function getMessageText(message: UIMessage): string {
   return message.parts
@@ -38,19 +39,21 @@ export function AskSolutionBuilder() {
 
   return (
     <>
-      {/* Floating Orb */}
-      <motion.button
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        transition={{ type: "spring", bounce: 0.5, delay: 5 }}
+      {/* Floating 3D Bot Avatar */}
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", bounce: 0.4, delay: 2 }}
+        className="fixed bottom-0 right-0 z-50 p-8 cursor-pointer group"
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-8 right-8 z-50 w-16 h-16 rounded-full bg-gradient-to-tr from-primary to-secondary shadow-[0_0_30px_rgba(180,100,255,0.6)] flex items-center justify-center border border-white/20 overflow-hidden group"
       >
-        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors" />
-        <MessageSquare className="w-8 h-8 text-white z-10" />
-      </motion.button>
+        <BotAvatar />
+        
+        {/* Hover Label */}
+        <div className="absolute top-20 right-48 px-6 py-3 glass-card rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-10 group-hover:translate-x-0 pointer-events-none">
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Initialize AI</p>
+        </div>
+      </motion.div>
 
       {/* Sleek Sidebar Chat */}
       <AnimatePresence>
