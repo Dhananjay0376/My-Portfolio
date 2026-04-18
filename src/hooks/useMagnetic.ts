@@ -1,50 +1,12 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { useRef } from "react";
 
+/**
+ * Disabled magnetic effect as per user feedback.
+ * Keeping the hook signature for compatibility but removing the pull logic.
+ */
 export function useMagnetic() {
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-
-    const xTo = gsap.quickTo(element, "x", { duration: 1, ease: "elastic.out(1, 0.3)" });
-    const yTo = gsap.quickTo(element, "y", { duration: 1, ease: "elastic.out(1, 0.3)" });
-
-    const mouseMove = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      const { width, height, left, top } = element.getBoundingClientRect();
-      const x = clientX - (left + width / 2);
-      const y = clientY - (top + height / 2);
-      
-      const strength = 40; // Adjust for more/less magnetism
-      const distance = Math.sqrt(x * x + y * y);
-      const radius = 100; // Activation radius
-
-      if (distance < radius) {
-        xTo(x * (strength / 100));
-        yTo(y * (strength / 100));
-      } else {
-        xTo(0);
-        yTo(0);
-      }
-    };
-
-    const mouseLeave = () => {
-      xTo(0);
-      yTo(0);
-    };
-
-    window.addEventListener("mousemove", mouseMove);
-    element.addEventListener("mouseleave", mouseLeave);
-
-    return () => {
-      window.removeEventListener("mousemove", mouseMove);
-      element.removeEventListener("mouseleave", mouseLeave);
-    };
-  }, []);
-
   return ref;
 }

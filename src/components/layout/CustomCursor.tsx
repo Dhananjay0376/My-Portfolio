@@ -2,35 +2,32 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
-import gsap from "gsap";
 
 export function CustomCursor() {
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoverType, setHoverType] = useState<"none" | "button" | "link">("none");
   const cursorRef = useRef<HTMLDivElement>(null);
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const springConfig = { damping: 25, stiffness: 150 };
+  const springConfig = { damping: 30, stiffness: 200 };
   const cursorX = useSpring(mouseX, springConfig);
   const cursorY = useSpring(mouseY, springConfig);
 
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
-      mouseX.set(e.clientX - 16);
-      mouseY.set(e.clientY - 16);
+      mouseX.set(e.clientX);
+      mouseY.set(e.clientY);
     };
 
     const handleHover = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (
-        target.tagName === "BUTTON" || 
-        target.tagName === "A" || 
-        target.closest(".magnetic-target")
-      ) {
-        setIsHovered(true);
+      if (target.tagName === "BUTTON" || target.closest("button")) {
+        setHoverType("button");
+      } else if (target.tagName === "A" || target.closest("a")) {
+        setHoverType("link");
       } else {
-        setIsHovered(false);
+        setHoverType("none");
       }
     };
 
@@ -44,20 +41,46 @@ export function CustomCursor() {
   }, [mouseX, mouseY]);
 
   return (
-    <motion.div
-      ref={cursorRef}
-      className="fixed top-0 left-0 w-8 h-8 rounded-full border border-primary pointer-events-none z-[9999] hidden lg:block mix-blend-difference"
-      style={{
-        x: cursorX,
-        y: cursorY,
-        scale: isHovered ? 2.5 : 1,
-        backgroundColor: isHovered ? "hsl(var(--primary))" : "transparent",
-      }}
-      transition={{ type: "spring", stiffness: 250, damping: 20 }}
-    >
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-1 h-1 bg-primary rounded-full" />
-      </div>
-    </motion.div>
+    <div className="fixed inset-0 pointer-events-none z-[9999] hidden lg:block">
+      {/* Main Cursor Dot */}
+      <motion.div
+        className="absolute w-2 h-2 bg-primary rounded-full"
+        style={{
+          x: cursorX,
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      />
+      
+      {/* Outer Halo/Ring */}
+      <motion.div
+        className="absolute rounded-full border border-primary/30"
+        animate={{
+          width: hoverType !== "none" ? 80 : 40,
+          height: hoverType !== "none" ? 80 : 40,
+          opacity: hoverType !== "none" ? 1 : 0.5,
+          backgroundColor: hoverType !== "none" ? "rgba(0, 240, 255, 0.05)" : "rgba(0, 240, 255, 0)",
+        }}
+        style={{
+          x: cursorX,
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+        transition={{ type: "spring", stiffness: 150, damping: 20 }}
+      />
+
+      {/* Dynamic Glow Spotlight */}
+      <motion.div
+        className="absolute w-64 h-64 bg-primary/5 rounded-full blur-[100px]"
+        style={{
+          x: cursorX,
+          y: cursorY,
+          translateX: "-50%",
+          translateY: "-50%",
+        }}
+      />
+    </div>
   );
 }
