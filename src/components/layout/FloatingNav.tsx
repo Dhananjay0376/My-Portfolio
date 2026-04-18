@@ -33,12 +33,17 @@ export function FloatingNav() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           setActiveSection(entry.target.id);
+          // Sync URL hash with active section
+          const targetHash = entry.target.id === "hero" ? "/" : `#${entry.target.id}`;
+          if (window.location.hash !== (targetHash.startsWith("#") ? targetHash : "")) {
+            window.history.replaceState(null, "", targetHash);
+          }
         }
       });
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
-    const sections = ["about", "expertise", "projects", "insights", "contact"];
+    const sections = ["hero", "about", "expertise", "projects", "insights", "contact"];
     sections.forEach((id) => {
       const el = document.getElementById(id);
       if (el) observer.observe(el);
@@ -66,7 +71,12 @@ export function FloatingNav() {
         )}
       >
         <Link href="/">
-          <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground shadow-[0_0_30px_rgba(0,240,255,0.4)] relative group overflow-hidden">
+          <div className={cn(
+            "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 relative group overflow-hidden",
+            activeSection === "hero" 
+              ? "bg-primary text-primary-foreground shadow-[0_0_30px_rgba(0,240,255,0.4)]" 
+              : "bg-white/5 text-muted-foreground/60 hover:text-white"
+          )}>
             <Home className="w-5 h-5 z-10" />
             <motion.div 
               className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity" 

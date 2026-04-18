@@ -19,7 +19,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
       {/* Hero Section */}
-      <section className="min-h-screen w-full relative flex items-center justify-center overflow-hidden">
+      <section id="hero" className="min-h-screen w-full relative flex items-center justify-center overflow-hidden">
         <HeroCanvas />
         <FloatingBadge />
         

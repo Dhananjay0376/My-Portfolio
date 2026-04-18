@@ -37,11 +37,18 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
               duration: 1.5,
               easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             });
-            // Update URL hash without jumping
             window.history.pushState(null, "", href);
           }
+        } else if (href === "/" || href === "/#") {
+          if (window.location.pathname === "/") {
+            e.preventDefault();
+            lenis.scrollTo(0, {
+              duration: 1.5,
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            });
+            window.history.pushState(null, "", "/");
+          }
         } else if (href && href.startsWith("/#")) {
-          // Handle cases like /#about when on the home page
           const hash = href.split("#")[1];
           if (window.location.pathname === "/") {
             e.preventDefault();
