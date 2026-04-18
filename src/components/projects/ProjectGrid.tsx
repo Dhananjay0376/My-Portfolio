@@ -107,8 +107,46 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
     >
       <div 
         style={{ transform: "translateZ(50px)" }}
-        className="absolute inset-0 rounded-[3rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/30 transition-all duration-700 shadow-2xl"
+        className="absolute inset-0 rounded-[3rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/40 transition-all duration-700 shadow-2xl"
       >
+        {/* Dynamic Light Flare */}
+        <motion.div
+          className="absolute -inset-px rounded-[3rem] z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{
+            background: useTransform(
+              [x, y],
+              ([xVal, yVal]) => {
+                const posX = (xVal as number + 0.5) * 100;
+                const posY = (yVal as number + 0.5) * 100;
+                return `radial-gradient(600px circle at ${posX}% ${posY}%, rgba(0, 240, 255, 0.15), transparent 40%)`;
+              }
+            ),
+          }}
+        />
+
+        {/* Refractive Border */}
+        <motion.div
+          className="absolute -inset-px rounded-[3rem] z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 border border-primary/50"
+          style={{
+            maskImage: useTransform(
+              [x, y],
+              ([xVal, yVal]) => {
+                const posX = (xVal as number + 0.5) * 100;
+                const posY = (yVal as number + 0.5) * 100;
+                return `radial-gradient(300px circle at ${posX}% ${posY}%, black, transparent)`;
+              }
+            ),
+            WebkitMaskImage: useTransform(
+              [x, y],
+              ([xVal, yVal]) => {
+                const posX = (xVal as number + 0.5) * 100;
+                const posY = (yVal as number + 0.5) * 100;
+                return `radial-gradient(300px circle at ${posX}% ${posY}%, black, transparent)`;
+              }
+            ),
+          }}
+        />
+
         <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-700`} />
         
         {/* Decorative elements */}

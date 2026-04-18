@@ -2,10 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Share2, ArrowRight, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Clock, ArrowRight, Loader2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 interface Insight {
@@ -21,29 +19,29 @@ interface Insight {
 const staticInsights: Insight[] = [
   {
     slug: "building-ai-agents",
-    title: "The Architecture of Reliable AI Agents",
+    title: "THE ARCHITECTURE OF RELIABLE AI AGENTS",
     excerpt: "How to move past simple chat wrappers and build autonomous agents that actually execute complex workflows.",
     category: "AI & Automation",
-    readTime: "8 min read",
-    date: "April 18, 2026",
+    readTime: "8 MIN READ",
+    date: "APRIL 18, 2026",
     gradient: "from-blue-600/20 to-purple-600/20",
   },
   {
     slug: "realtime-systems-scale",
-    title: "Scaling Real-time WebSockets to 100k Users",
+    title: "SCALING REAL-TIME WEBSOCKETS TO 100K",
     excerpt: "Lessons learned from building a synchronized collaborative environment with zero perceived latency.",
     category: "Architecture",
-    readTime: "12 min read",
-    date: "March 02, 2026",
+    readTime: "12 MIN READ",
+    date: "MARCH 02, 2026",
     gradient: "from-emerald-600/20 to-cyan-600/20",
   },
   {
     slug: "cinematic-web-design",
-    title: "Vibe Coding: The Future of Web Design",
+    title: "VIBE CODING: THE FUTURE OF WEB DESIGN",
     excerpt: "Why flat design is dead and how to use 3D, physics, and shaders to create fan-making experiences.",
     category: "Frontend",
-    readTime: "6 min read",
-    date: "February 14, 2026",
+    readTime: "6 MIN READ",
+    date: "FEBRUARY 14, 2026",
     gradient: "from-rose-600/20 to-orange-600/20",
   },
 ];
@@ -52,13 +50,13 @@ const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.2 },
+    transition: { staggerChildren: 0.1 },
   },
 };
 
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", bounce: 0.4 } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } },
 };
 
 export function InsightsGrid() {
@@ -93,60 +91,59 @@ export function InsightsGrid() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <Loader2 className="w-10 h-10 text-secondary animate-spin" />
-        <p className="text-muted-foreground animate-pulse">Scanning knowledge nodes...</p>
+      <div className="flex flex-col items-center justify-center py-20 gap-8">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+        <p className="text-[10px] font-mono tracking-[0.5em] text-muted-foreground/40 uppercase">Decrypting Knowledge Nodes</p>
       </div>
     );
   }
+
   return (
     <motion.div 
       variants={containerVariants}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, margin: "-50px" }}
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
     >
       {insights.map((post) => (
-        <motion.div key={post.slug} variants={itemVariants} className="group h-full">
-          <Card className={`h-full flex flex-col border-white/5 bg-black/40 backdrop-blur-sm overflow-hidden transition-all duration-500 hover:border-primary/30 hover:shadow-[0_0_30px_rgba(0,240,255,0.1)] hover:-translate-y-2`}>
-            {/* Image Placeholder with Gradient */}
-            <div className={`h-48 w-full bg-gradient-to-br ${post.gradient} relative overflow-hidden`}>
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-              {/* Fake abstract geometric shapes for the thumbnail */}
-              <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
-              <div className="absolute top-4 left-4">
-                <Badge variant="secondary" className="bg-black/50 backdrop-blur-md border-white/10 text-white">
-                  {post.category}
-                </Badge>
+        <motion.div 
+          key={post.slug} 
+          variants={itemVariants} 
+          className="group relative h-[500px] glass-card rounded-[2.5rem] border-white/5 hover:border-primary/20 transition-all duration-700 overflow-hidden"
+        >
+          <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${post.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-700`} />
+          
+          <div className="p-12 flex flex-col h-full gap-8">
+            <div className="flex justify-between items-start">
+              <Badge variant="outline" className="text-[10px] font-mono border-white/10 uppercase tracking-widest text-primary/60">
+                {post.category}
+              </Badge>
+              <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground/30">
+                <Clock className="w-3 h-3" />
+                {post.readTime}
               </div>
             </div>
 
-            <CardHeader className="flex-1 pb-4">
-              <div className="flex items-center text-xs text-muted-foreground gap-4 mb-3">
-                <span>{post.date}</span>
-                <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {post.readTime}</span>
-              </div>
-              <h3 className="text-xl font-bold leading-tight group-hover:text-primary transition-colors">
+            <div className="flex-1 space-y-6">
+              <h3 className="text-3xl font-black tracking-tighter leading-[1.1] text-white group-hover:text-primary transition-colors duration-500">
                 {post.title}
               </h3>
-            </CardHeader>
-
-            <CardContent>
-              <p className="text-muted-foreground line-clamp-3 text-sm">
+              <p className="text-muted-foreground/50 font-light leading-relaxed italic text-sm">
                 {post.excerpt}
               </p>
-            </CardContent>
+            </div>
 
-            <CardFooter className="pt-4 border-t border-white/5 flex justify-between items-center">
-              <Button variant="ghost" size="sm" className="px-0 hover:bg-transparent hover:text-primary group/btn">
-                Read Article <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
-              </Button>
-              <Button variant="ghost" size="icon" className="h-8 w-8 rounded-full text-muted-foreground hover:text-white">
-                <Share2 className="w-4 h-4" />
-              </Button>
-            </CardFooter>
-          </Card>
+            <div className="pt-8 border-t border-white/5 flex items-center justify-between">
+              <span className="text-[10px] font-mono text-muted-foreground/20">{post.date}</span>
+              <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center group-hover:border-primary/40 group-hover:bg-primary/5 transition-all duration-500">
+                <ArrowRight className="w-4 h-4 text-muted-foreground/40 group-hover:text-primary group-hover:translate-x-1 transition-all" />
+              </div>
+            </div>
+          </div>
+
+          {/* Abstract hover background */}
+          <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-[80px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
         </motion.div>
       ))}
     </motion.div>
