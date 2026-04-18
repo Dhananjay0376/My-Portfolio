@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ArrowUpRight, Loader2, Code, Link as LinkIcon } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Magnetic } from "@/components/ui/magnetic";
+import { cn } from "@/lib/utils";
 
 export interface Project {
   slug: string;
@@ -69,14 +70,21 @@ export const projectsData: Project[] = [
 ];
 
 function ProjectCard({ project, index }: { project: Project, index: number }) {
+  const [isHovered, setIsHovered] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
   const mouseXSpring = useSpring(x);
   const mouseYSpring = useSpring(y);
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+
+  // Cursor following logic
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
+  const cursorXSpring = useSpring(cursorX, { stiffness: 500, damping: 30 });
+  const cursorYSpring = useSpring(cursorY, { stiffness: 500, damping: 30 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -84,13 +92,20 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
     const height = rect.height;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
+    
     const xPct = mouseX / width - 0.5;
     const yPct = mouseY / height - 0.5;
+    
     x.set(xPct);
     y.set(yPct);
+
+    cursorX.set(mouseX);
+    cursorY.set(mouseY);
   };
 
+  const handleMouseEnter = () => setIsHovered(true);
   const handleMouseLeave = () => {
+    setIsHovered(false);
     x.set(0);
     y.set(0);
   };
@@ -99,89 +114,91 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
     <motion.div
       style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
       onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative h-[550px] w-full perspective cursor-none"
+      initial={{ opacity: 0, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 1.2, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className={cn(
+        "group relative h-[650px] w-full perspective cursor-none mb-20",
+        index % 2 !== 0 && "md:mt-32" // Staggered effect
+      )}
     >
+      {/* Custom Section Cursor */}
+      <motion.div
+        className="absolute z-50 pointer-events-none flex items-center justify-center"
+        style={{
+          left: cursorXSpring,
+          top: cursorYSpring,
+          x: "-50%",
+          y: "-50%",
+          opacity: isHovered ? 1 : 0,
+          scale: isHovered ? 1 : 0,
+        }}
+      >
+        <div className="bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.3em] px-6 py-3 rounded-full shadow-[0_0_40px_rgba(0,240,255,0.6)]">
+          Explore
+        </div>
+      </motion.div>
+
       <div 
         style={{ transform: "translateZ(50px)" }}
-        className="absolute inset-0 rounded-[3rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/40 transition-all duration-700 shadow-2xl"
+        className="absolute inset-0 rounded-[4rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/40 transition-all duration-700 shadow-2xl"
       >
+        {/* Grain/Noise Overlay */}
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+
         {/* Dynamic Light Flare */}
         <motion.div
-          className="absolute -inset-px rounded-[3rem] z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          className="absolute -inset-px rounded-[4rem] z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
           style={{
             background: useTransform(
               [x, y],
               ([xVal, yVal]) => {
                 const posX = (xVal as number + 0.5) * 100;
                 const posY = (yVal as number + 0.5) * 100;
-                return `radial-gradient(600px circle at ${posX}% ${posY}%, rgba(0, 240, 255, 0.15), transparent 40%)`;
+                return `radial-gradient(800px circle at ${posX}% ${posY}%, rgba(0, 240, 255, 0.2), transparent 50%)`;
               }
             ),
           }}
         />
 
-        {/* Refractive Border */}
-        <motion.div
-          className="absolute -inset-px rounded-[3rem] z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500 border border-primary/50"
-          style={{
-            maskImage: useTransform(
-              [x, y],
-              ([xVal, yVal]) => {
-                const posX = (xVal as number + 0.5) * 100;
-                const posY = (yVal as number + 0.5) * 100;
-                return `radial-gradient(300px circle at ${posX}% ${posY}%, black, transparent)`;
-              }
-            ),
-            WebkitMaskImage: useTransform(
-              [x, y],
-              ([xVal, yVal]) => {
-                const posX = (xVal as number + 0.5) * 100;
-                const posY = (yVal as number + 0.5) * 100;
-                return `radial-gradient(300px circle at ${posX}% ${posY}%, black, transparent)`;
-              }
-            ),
-          }}
-        />
-
-        <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-700`} />
+        <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 group-hover:opacity-40 transition-opacity duration-1000`} />
         
-        {/* Decorative elements */}
-        <div className="absolute top-10 right-10 p-8">
-          <Magnetic>
-            <Link href={`/projects/${project.slug}`}>
-              <div className="w-14 h-14 rounded-full glass border-white/10 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                <ArrowUpRight className="w-7 h-7" />
-              </div>
-            </Link>
-          </Magnetic>
-        </div>
+        {/* Corner Accents */}
+        <div className="absolute top-12 left-12 w-12 h-12 border-t-2 border-l-2 border-white/10 rounded-tl-2xl group-hover:border-primary/40 transition-colors" />
+        <div className="absolute bottom-12 right-12 w-12 h-12 border-b-2 border-r-2 border-white/10 rounded-br-2xl group-hover:border-primary/40 transition-colors" />
 
         <div 
-          style={{ transform: "translateZ(100px)" }}
-          className="absolute inset-0 p-16 flex flex-col justify-end gap-10 pointer-events-none"
+          style={{ transform: "translateZ(120px)" }}
+          className="absolute inset-0 p-20 flex flex-col justify-end gap-12 pointer-events-none"
         >
-          <div className="space-y-4 pointer-events-auto">
-            <span className="text-[0.6rem] uppercase tracking-[0.5em] font-mono text-primary/80 font-bold">{project.category}</span>
-            <h3 className="text-4xl font-black tracking-widest text-white leading-none uppercase">{project.title}</h3>
-            <p className="text-muted-foreground/50 text-base font-light leading-relaxed max-w-[90%] italic">{project.tagline}</p>
+          <div className="space-y-6 pointer-events-auto">
+            <div className="flex items-center gap-4">
+              <span className="text-[0.7rem] uppercase tracking-[0.8em] font-mono text-primary font-black">{project.category}</span>
+              <div className="h-px flex-1 bg-gradient-to-r from-primary/20 to-transparent" />
+            </div>
+            <h3 className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-[0.9] uppercase group-hover:translate-x-2 transition-transform duration-700">{project.title}</h3>
+            <p className="text-muted-foreground/60 text-lg font-light leading-relaxed max-w-[85%] italic">{project.tagline}</p>
           </div>
 
-          <div className="flex flex-wrap gap-2 pointer-events-auto">
-            {project.tech.slice(0, 3).map((t) => (
-              <Badge key={t} variant="outline" className="border-white/5 bg-white/5 text-[10px] text-white/60 backdrop-blur-md uppercase tracking-widest px-3 py-1">
-                {t}
-              </Badge>
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-1 pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
-            {project.metrics.map(m => (
-              <span key={m} className="text-[10px] font-mono text-secondary/80">▸ {m}</span>
-            ))}
+          <div className="flex items-center justify-between pointer-events-auto">
+            <div className="flex flex-wrap gap-3">
+              {project.tech.slice(0, 3).map((t) => (
+                <Badge key={t} variant="outline" className="border-white/10 bg-white/5 text-[10px] text-white/80 backdrop-blur-xl uppercase tracking-widest px-4 py-1.5 rounded-full">
+                  {t}
+                </Badge>
+              ))}
+            </div>
+            
+            <div className="flex flex-col items-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
+              {project.metrics.map(m => (
+                <span key={m} className="text-[11px] font-mono text-secondary font-bold tracking-tighter">
+                  <span className="text-primary/40 mr-2">/</span> {m}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -234,17 +251,18 @@ export function ProjectGrid() {
   }
 
   return (
-    <div className="w-full space-y-20">
-      <div className="flex flex-wrap items-center justify-center gap-4">
+    <div className="w-full space-y-32">
+      <div className="flex flex-wrap items-center justify-center gap-6">
         {categories.map((cat) => (
           <Magnetic key={cat}>
             <button
               onClick={() => setFilter(cat)}
-              className={`px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border ${
+              className={cn(
+                "px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-700 border",
                 filter === cat
-                  ? "bg-primary text-primary-foreground border-primary shadow-[0_0_30px_rgba(0,240,255,0.4)]"
-                  : "bg-white/5 text-muted-foreground border-white/5 hover:bg-white/10 hover:text-white"
-              }`}
+                  ? "bg-primary text-primary-foreground border-primary shadow-[0_0_50px_rgba(0,240,255,0.4)]"
+                  : "bg-white/5 text-muted-foreground border-white/10 hover:bg-white/10 hover:text-white"
+              )}
             >
               {cat}
             </button>
@@ -252,7 +270,7 @@ export function ProjectGrid() {
         ))}
       </div>
 
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
+      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-0">
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
