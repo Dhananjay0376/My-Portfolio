@@ -103,20 +103,20 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="group relative h-[450px] w-full perspective cursor-none"
+      className="group relative h-[550px] w-full perspective cursor-none"
     >
       <div 
         style={{ transform: "translateZ(50px)" }}
-        className="absolute inset-0 rounded-[2.5rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/30 transition-all duration-700 shadow-2xl"
+        className="absolute inset-0 rounded-[3rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/30 transition-all duration-700 shadow-2xl"
       >
         <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-700`} />
         
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 p-8">
+        <div className="absolute top-10 right-10 p-8">
           <Magnetic>
             <Link href={`/projects/${project.slug}`}>
-              <div className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
-                <ArrowUpRight className="w-6 h-6" />
+              <div className="w-14 h-14 rounded-full glass border-white/10 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
+                <ArrowUpRight className="w-7 h-7" />
               </div>
             </Link>
           </Magnetic>
@@ -124,12 +124,12 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
 
         <div 
           style={{ transform: "translateZ(100px)" }}
-          className="absolute inset-0 p-10 flex flex-col justify-end gap-6 pointer-events-none"
+          className="absolute inset-0 p-16 flex flex-col justify-end gap-10 pointer-events-none"
         >
-          <div className="space-y-2 pointer-events-auto">
-            <span className="text-[0.6rem] uppercase tracking-[0.4em] font-mono text-primary/80 font-bold">{project.category}</span>
-            <h3 className="text-4xl font-black tracking-tighter text-white leading-none">{project.title}</h3>
-            <p className="text-muted-foreground/80 text-sm font-light leading-relaxed max-w-[85%]">{project.tagline}</p>
+          <div className="space-y-4 pointer-events-auto">
+            <span className="text-[0.6rem] uppercase tracking-[0.5em] font-mono text-primary/80 font-bold">{project.category}</span>
+            <h3 className="text-4xl font-black tracking-widest text-white leading-none uppercase">{project.title}</h3>
+            <p className="text-muted-foreground/50 text-base font-light leading-relaxed max-w-[90%] italic">{project.tagline}</p>
           </div>
 
           <div className="flex flex-wrap gap-2 pointer-events-auto">
@@ -214,7 +214,7 @@ export function ProjectGrid() {
         ))}
       </div>
 
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-20">
         <AnimatePresence mode="popLayout">
           {filteredProjects.map((project, index) => (
             <ProjectCard key={project.slug} project={project} index={index} />
