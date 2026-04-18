@@ -4,6 +4,7 @@ import { FloatingBadge } from "@/components/hero/FloatingBadge";
 import { NarrativeTimeline } from "@/components/about/NarrativeTimeline";
 import { SkillRadar } from "@/components/expertise/SkillRadar";
 import { InsightsGrid } from "@/components/insights/InsightsGrid";
+import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail } from "lucide-react";
 
@@ -55,7 +56,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Projects Scaffold */}
+      {/* Projects Section */}
       <section id="projects" className="min-h-screen w-full py-32 bg-background relative z-10 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
         <div className="container mx-auto px-4">
@@ -63,7 +64,7 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">Selected Works</h2>
             <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Case studies of solutions that moved the needle.</p>
           </div>
-          {/* Phase 4 Component will go here */}
+          <ProjectGrid />
         </div>
       </section>
 
