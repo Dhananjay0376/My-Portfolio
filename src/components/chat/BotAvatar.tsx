@@ -11,9 +11,9 @@ function BotMesh() {
   // Use a fallback or handle errors silently for better UX
   let texture;
   try {
-    texture = useLoader(THREE.TextureLoader, "/bot-avatar.png");
+    texture = useLoader(THREE.TextureLoader, "/bot-avatar.jpg");
   } catch (e) {
-    console.error("Bot texture not found. Please ensure public/bot-avatar.png exists.");
+    console.error("Bot texture not found. Please ensure public/bot-avatar.jpg exists.");
     return null;
   }
 
