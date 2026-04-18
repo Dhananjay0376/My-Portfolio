@@ -42,7 +42,7 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="min-h-screen w-full pt-40 pb-60 relative z-10 bg-background overflow-hidden bg-mesh">
+      <section id="about" className="min-h-screen w-full pt-40 pb-60 relative z-10 bg-background overflow-hidden">
         <SectionReveal>
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
           <div className="container mx-auto px-4 relative">
@@ -56,7 +56,7 @@ export default function Home() {
       </section>
 
       {/* Expertise Section */}
-      <section id="expertise" className="min-h-screen w-full py-60 relative z-10 bg-black overflow-hidden bg-mesh">
+      <section id="expertise" className="min-h-screen w-full py-60 relative z-10 bg-black overflow-hidden">
         <SectionReveal>
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary/10 to-transparent" />
           <div className="container mx-auto px-4 relative z-10">
@@ -70,7 +70,7 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="min-h-screen w-full py-60 bg-background relative z-10 overflow-hidden bg-mesh">
+      <section id="projects" className="min-h-screen w-full py-60 bg-background relative z-10 overflow-hidden">
         <SectionReveal>
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
           <div className="container mx-auto px-4">
@@ -84,7 +84,7 @@ export default function Home() {
       </section>
 
       {/* Insights Section */}
-      <section id="insights" className="min-h-screen w-full py-60 relative z-10 bg-black overflow-hidden bg-mesh">
+      <section id="insights" className="min-h-screen w-full py-60 relative z-10 bg-black overflow-hidden">
         <SectionReveal>
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary/10 to-transparent" />
           <div className="container mx-auto px-4">
@@ -103,7 +103,7 @@ export default function Home() {
       </section>
       
       {/* Contact Section */}
-      <section id="contact" className="min-h-screen w-full py-60 bg-background relative z-10 overflow-hidden bg-mesh">
+      <section id="contact" className="min-h-screen w-full py-60 bg-background relative z-10 overflow-hidden">
         <SectionReveal>
           <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/10 to-transparent" />
           <div className="container mx-auto px-4 relative z-10">

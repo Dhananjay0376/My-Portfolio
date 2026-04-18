@@ -8,6 +8,7 @@ import { SmoothScroll } from "@/components/layout/SmoothScroll";
 import { AmbientCanvas } from "@/components/layout/AmbientCanvas";
 import { FloatingNav } from "@/components/layout/FloatingNav";
 import { CustomCursor } from "@/components/layout/CustomCursor";
+import { SceneContainer } from "@/components/layout/SceneContainer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,21 +44,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning className="dark">
-      <body className={`${inter.variable} antialiased`}>
+      <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
         >
+          <SceneContainer />
+          <AmbientCanvas />
           <SmoothScroll>
-            <AmbientCanvas />
-            <FloatingNav />
-            <CustomCursor />
-            <ScrollProgress />
-            {children}
-            <AskSolutionBuilder />
+            <div className="relative z-10 min-h-screen">
+              <FloatingNav />
+              <ScrollProgress />
+              {children}
+            </div>
           </SmoothScroll>
+          <AskSolutionBuilder />
         </ThemeProvider>
       </body>
     </html>

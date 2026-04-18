@@ -40,20 +40,7 @@ export function AskSolutionBuilder() {
   return (
     <>
       {/* Floating 3D Bot Avatar */}
-      <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ type: "spring", bounce: 0.4, delay: 2 }}
-        className="fixed bottom-0 right-0 z-50 p-8 cursor-pointer group"
-        onClick={() => setIsOpen(true)}
-      >
-        <BotAvatar />
-        
-        {/* Hover Label */}
-        <div className="absolute top-20 right-48 px-6 py-3 glass-card rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-10 group-hover:translate-x-0 pointer-events-none">
-          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Initialize AI</p>
-        </div>
-      </motion.div>
+      <BotAvatar onClick={() => setIsOpen(true)} />
 
       {/* Sleek Sidebar Chat */}
       <AnimatePresence>
@@ -64,7 +51,7 @@ export function AskSolutionBuilder() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[201]"
             />
             
             <motion.div
@@ -72,7 +59,7 @@ export function AskSolutionBuilder() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: "100%", opacity: 0 }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-              className="fixed top-0 right-0 bottom-0 w-full md:w-[400px] bg-background/95 backdrop-blur-xl border-l border-white/10 z-50 flex flex-col shadow-2xl"
+              className="fixed top-0 right-0 bottom-0 w-full md:w-[400px] bg-background/95 backdrop-blur-xl border-l border-white/10 z-[201] flex flex-col shadow-2xl"
             >
               {/* Header */}
               <div className="p-6 border-b border-white/10 flex items-center justify-between bg-black/40">
