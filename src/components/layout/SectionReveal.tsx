@@ -12,9 +12,9 @@ export function SectionReveal({ children }: { children: React.ReactNode }) {
 
   const clipPath = useTransform(
     scrollYProgress,
-    [0, 0.3, 1],
+    [0, 0.15, 1],
     [
-      "inset(100% 0% 0% 0%)",
+      "inset(50% 0% 0% 0%)",
       "inset(0% 0% 0% 0%)",
       "inset(0% 0% 0% 0%)",
     ]

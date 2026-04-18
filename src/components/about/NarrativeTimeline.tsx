@@ -36,7 +36,7 @@ export function NarrativeTimeline() {
   const pathLength = useTransform(scrollYProgress, [0.1, 0.9], [0, 1]);
 
   return (
-    <div ref={containerRef} className="relative max-w-6xl mx-auto py-40 px-4">
+    <div ref={containerRef} className="relative max-w-6xl mx-auto py-20 px-4">
       {/* Central Line */}
       <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/5 -translate-x-1/2">
         <motion.div
