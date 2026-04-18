@@ -1,12 +1,23 @@
-import { projectsData } from "@/components/projects/ProjectGrid";
+import { projectsData, Project } from "@/components/projects/ProjectGrid";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Code, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, Code, CheckCircle2, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { supabase } from "@/lib/supabase";
+
+export const revalidate = 3600; // revalidate every hour
 
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const project = projectsData.find((p) => p.slug === resolvedParams.slug);
+  
+  // Try fetching from Supabase
+  const { data: projectFromDB } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('slug', resolvedParams.slug)
+    .single();
+
+  const project = (projectFromDB as Project) || projectsData.find((p) => p.slug === resolvedParams.slug);
 
   if (!project) {
     notFound();

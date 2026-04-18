@@ -1,13 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Loader2 } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
-export const projectsData = [
+export interface Project {
+  slug: string;
+  title: string;
+  tagline: string;
+  category: string;
+  tech: string[];
+  metrics: string[];
+  gradient: string;
+  live_url?: string;
+  github_url?: string;
+}
+
+export const projectsData: Project[] = [
   {
     slug: "jewellery-ecommerce",
     title: "Jewellery Store E-commerce",
@@ -59,10 +72,48 @@ const categories = ["All", "Web Apps", "E-commerce", "AI & Automation", "Real-ti
 
 export function ProjectGrid() {
   const [filter, setFilter] = useState("All");
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const filteredProjects = projectsData.filter(
+  useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const { data, error } = await supabase
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          setProjects(data);
+        } else {
+          // Fallback to static data if DB is empty
+          setProjects(projectsData);
+        }
+      } catch (err) {
+        console.error("Error fetching projects:", err);
+        setProjects(projectsData);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchProjects();
+  }, []);
+
+  const filteredProjects = projects.filter(
     (project) => filter === "All" || project.category === filter
   );
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <Loader2 className="w-10 h-10 text-primary animate-spin" />
+        <p className="text-muted-foreground animate-pulse">Syncing with solution vault...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">

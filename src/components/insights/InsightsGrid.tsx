@@ -1,12 +1,24 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion, Variants } from "framer-motion";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Share2, ArrowRight } from "lucide-react";
+import { Clock, Share2, ArrowRight, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/lib/supabase";
 
-const insights = [
+interface Insight {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  readTime: string;
+  date: string;
+  gradient: string;
+}
+
+const staticInsights: Insight[] = [
   {
     slug: "building-ai-agents",
     title: "The Architecture of Reliable AI Agents",
@@ -50,6 +62,43 @@ const itemVariants: Variants = {
 };
 
 export function InsightsGrid() {
+  const [insights, setInsights] = useState<Insight[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchInsights() {
+      try {
+        const { data, error } = await supabase
+          .from('insights')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          setInsights(data);
+        } else {
+          setInsights(staticInsights);
+        }
+      } catch (err) {
+        console.error("Error fetching insights:", err);
+        setInsights(staticInsights);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchInsights();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <Loader2 className="w-10 h-10 text-secondary animate-spin" />
+        <p className="text-muted-foreground animate-pulse">Scanning knowledge nodes...</p>
+      </div>
+    );
+  }
   return (
     <motion.div 
       variants={containerVariants}
