@@ -1,16 +1,14 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { useScroll, useTransform } from "framer-motion";
+import { useRef, useMemo, useState, useEffect } from "react";
+import { useFrame } from "@react-three/fiber";
+import { View } from "@react-three/drei";
+import { useScroll } from "framer-motion";
 import * as THREE from "three";
 
 function MeshGradient() {
   const meshRef = useRef<THREE.Mesh>(null);
   const { scrollYProgress } = useScroll();
-  
-  // Create a parallax offset based on scroll
-  const scrollOffset = useTransform(scrollYProgress, [0, 1], [0, 10]);
   
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
@@ -22,13 +20,12 @@ function MeshGradient() {
   useFrame((state) => {
     if (meshRef.current) {
       uniforms.uTime.value = state.clock.getElapsedTime();
-      // Sync scroll progress to shader
       uniforms.uScroll.value = scrollYProgress.get();
     }
   });
 
   return (
-    <mesh ref={meshRef} scale={[2, 2, 1]}>
+    <mesh ref={meshRef} scale={[1, 1, 1]}>
       <planeGeometry args={[2, 2, 64, 64]} />
       <shaderMaterial
         transparent
@@ -40,7 +37,6 @@ function MeshGradient() {
           void main() {
             vUv = uv;
             vec3 pos = position;
-            // Add subtle wave based on time and scroll
             pos.z += sin(pos.x * 3.0 + uTime * 0.5 + uScroll * 10.0) * 0.05;
             pos.z += cos(pos.y * 2.0 + uTime * 0.3) * 0.05;
             gl_Position = vec4(pos, 1.0);
@@ -55,15 +51,10 @@ function MeshGradient() {
 
           void main() {
             vec2 uv = vUv;
-            // Create moving patterns
             float noise = sin(uv.x * 10.0 + uTime * 0.2 + uScroll * 5.0) * 0.5 + 0.5;
             noise *= cos(uv.y * 8.0 - uTime * 0.15) * 0.5 + 0.5;
-            
             vec3 color = mix(uColorA, uColorB, noise);
-            
-            // Add scroll-dependent brightness/warp
             color *= 0.1 + (0.05 * sin(uScroll * 20.0));
-            
             gl_FragColor = vec4(color, 0.15);
           }
         `}
@@ -73,11 +64,16 @@ function MeshGradient() {
 }
 
 export function AmbientCanvas() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
+  if (!mounted) return <div className="fixed inset-0 -z-10 bg-background" />;
+
   return (
     <div className="fixed inset-0 -z-10 pointer-events-none opacity-40">
-      <Canvas camera={{ position: [0, 0, 1], fov: 75 }}>
+      <View className="h-full w-full">
         <MeshGradient />
-      </Canvas>
+      </View>
     </div>
   );
 }
