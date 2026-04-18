@@ -146,8 +146,7 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
         style={{ transform: "translateZ(50px)" }}
         className="absolute inset-0 rounded-[4rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/40 transition-all duration-700 shadow-2xl"
       >
-        {/* Grain/Noise Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+        {/* Grain Overlay handled by global .glass-card */}
 
         {/* Dynamic Light Flare */}
         <motion.div

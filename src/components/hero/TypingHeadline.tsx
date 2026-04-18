@@ -13,16 +13,16 @@ export function TypingHeadline() {
         className="glass-card p-16 md:p-24 rounded-[3rem] border-white/5 relative group"
       >
         {/* Decorative Corner Accents */}
-        <div className="absolute top-8 left-8 w-4 h-4 border-t-2 border-l-2 border-primary/20" />
-        <div className="absolute top-8 right-8 w-4 h-4 border-t-2 border-r-2 border-primary/20" />
-        <div className="absolute bottom-8 left-8 w-4 h-4 border-b-2 border-l-2 border-primary/20" />
-        <div className="absolute bottom-8 right-8 w-4 h-4 border-b-2 border-r-2 border-primary/20" />
+        <div className="absolute top-8 left-8 w-8 h-8 border-t-2 border-l-2 border-primary/40" />
+        <div className="absolute top-8 right-8 w-8 h-8 border-t-2 border-r-2 border-primary/40" />
+        <div className="absolute bottom-8 left-8 w-8 h-8 border-b-2 border-l-2 border-primary/40" />
+        <div className="absolute bottom-8 right-8 w-8 h-8 border-b-2 border-r-2 border-primary/40" />
 
         <div className="space-y-8">
-          <h2 className="text-[0.6rem] uppercase tracking-[1em] font-mono text-primary font-black opacity-60">
+          <h2 className="text-[0.75rem] md:text-sm uppercase tracking-[1.2em] font-mono text-primary font-black opacity-80">
             System Architect &bull; Solution Engineer
           </h2>
-          <h1 className="text-4xl md:text-6xl lg:text-8xl font-black tracking-widest leading-[0.9] max-w-5xl">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-widest leading-[0.9] max-w-5xl">
             <TextScramble text="ENGINEERING" duration={1.5} className="block" />
             <TextScramble text="THE FUTURE" duration={2} className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/10" />
           </h1>

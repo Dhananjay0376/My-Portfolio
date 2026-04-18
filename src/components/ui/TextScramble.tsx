@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 const chars = "!<>-_\\/[]{}—=+*^?#________";
 
@@ -12,11 +12,15 @@ interface TextScrambleProps {
 
 export function TextScramble({ text, duration = 1.5, className }: TextScrambleProps) {
   const [displayText, setDisplayText] = useState(text);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const scramble = useCallback(() => {
     let frame = 0;
     const totalFrames = duration * 60;
-    const interval = setInterval(() => {
+    
+    if (intervalRef.current) clearInterval(intervalRef.current);
+
+    intervalRef.current = setInterval(() => {
       const currentText = text
         .split("")
         .map((char, index) => {
@@ -32,15 +36,16 @@ export function TextScramble({ text, duration = 1.5, className }: TextScramblePr
 
       if (frame >= totalFrames) {
         setDisplayText(text);
-        clearInterval(interval);
+        if (intervalRef.current) clearInterval(intervalRef.current);
       }
     }, 1000 / 60);
-
-    return () => clearInterval(interval);
   }, [text, duration]);
 
   useEffect(() => {
     scramble();
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
   }, [scramble]);
 
   return <span className={className}>{displayText}</span>;

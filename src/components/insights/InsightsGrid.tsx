@@ -123,8 +123,7 @@ export function InsightsGrid() {
               index % 3 === 2 && "lg:mt-64"
             )}
           >
-            {/* Grain Overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+            {/* Grain Overlay handled by global .glass-card */}
             
             <div className={`absolute top-0 left-0 w-full h-2 bg-gradient-to-r ${post.gradient} opacity-20 group-hover:opacity-100 transition-opacity duration-700`} />
             

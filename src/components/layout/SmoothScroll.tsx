@@ -66,6 +66,18 @@ export function SmoothScroll({ children }: { children: React.ReactNode }) {
     };
 
     window.addEventListener("click", handleAnchorClick);
+    
+    // Handle initial hash on mount
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1);
+      const element = document.getElementById(id);
+      if (element) {
+        // Small delay to ensure everything is rendered
+        setTimeout(() => {
+          lenis.scrollTo(element, { immediate: true });
+        }, 100);
+      }
+    }
 
     return () => {
       lenis.destroy();
