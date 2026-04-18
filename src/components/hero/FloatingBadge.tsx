@@ -6,10 +6,10 @@ import { Globe } from "lucide-react";
 export function FloatingBadge() {
   return (
     <motion.div
-      initial={{ opacity: 0, x: 20 }}
+      initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 1, delay: 2, ease: "easeOut" }}
-      className="absolute top-10 right-10 z-20 hidden lg:flex items-center gap-4 p-1 pr-6 rounded-full glass-card border-white/5 shadow-2xl"
+      className="absolute bottom-32 left-10 z-20 hidden lg:flex items-center gap-4 p-1 pr-6 rounded-full glass-card border-white/5 shadow-2xl"
     >
       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
         <Globe className="w-5 h-5 text-primary animate-pulse" />

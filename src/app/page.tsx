@@ -22,7 +22,7 @@ export default function Home() {
         <HeroCanvas />
         <FloatingBadge />
         
-        <div className="z-10 flex flex-col items-center gap-24 mt-16 px-4">
+        <div className="z-10 flex flex-col items-center gap-24 mt-48 px-4">
           <TypingHeadline />
           
           <div className="flex flex-col sm:flex-row gap-8 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-[2000ms] fill-mode-backwards">
