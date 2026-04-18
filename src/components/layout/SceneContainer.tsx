@@ -18,8 +18,8 @@ export function SceneContainer() {
           stencil: true,
           depth: true,
           precision: "highp",
-          dithering: true,
-          toneMapping: 0,
+          toneMapping: 4, // ACESFilmicToneMapping
+          toneMappingExposure: 0.4, // Extremely low to force deep saturation
         }}
       >
         <Suspense fallback={null}>

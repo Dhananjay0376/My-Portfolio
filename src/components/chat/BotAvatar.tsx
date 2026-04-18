@@ -15,18 +15,20 @@ const RobotModel = memo(function RobotModel() {
   const obj = useLoader(OBJLoader, "/model/base.obj");
   
   const textures = useTexture({
-    map: "/model/texture_diffuse.png",
+    map: "/model/shaded.png", // Switching back to shaded as it's more saturated
     metalnessMap: "/model/texture_metallic.png",
     roughnessMap: "/model/texture_roughness.png",
     normalMap: "/model/texture_normal.png",
   });
+
+  // Enforce SRGB color space to prevent washed out look
+  if (textures.map) textures.map.colorSpace = THREE.SRGBColorSpace;
 
   const groupRef = useRef<THREE.Group>(null);
 
   useEffect(() => {
     if (!obj) return;
     
-    // Ensure textures are vivid and not washed out
     textures.map.colorSpace = THREE.SRGBColorSpace;
     textures.map.flipY = false;
     textures.normalMap.flipY = false;
@@ -35,16 +37,22 @@ const RobotModel = memo(function RobotModel() {
 
     obj.traverse((child) => {
       if (child instanceof THREE.Mesh) {
+        console.log("Mesh Name:", child.name);
+        
+        const name = child.name.toLowerCase();
+        const isEyeBase = name.includes("eye") || name.includes("lens");
+        const isPupil = name.includes("pupil") || name.includes("iris");
+        const isAnyEyePart = isEyeBase || isPupil;
+
         child.material = new THREE.MeshStandardMaterial({
           map: textures.map,
-          normalMap: textures.normalMap,
           metalnessMap: textures.metalnessMap,
           roughnessMap: textures.roughnessMap,
-          metalness: 1.5, // High metalness for deep contrast
-          roughness: 0.3, // Lower roughness for wet-look red paint
-          emissive: "#ff0000",
-          emissiveMap: textures.map,
-          emissiveIntensity: 3.0, // Overdrive red glow
+          normalMap: textures.normalMap,
+          color: "#ffffff", 
+          metalness: 0.0,   // Pure plastic look for maximum color saturation
+          roughness: 0.5,   
+          envMapIntensity: 0.0, // Totally disable environment wash for now
           side: THREE.DoubleSide,
         });
         child.geometry.computeVertexNormals();
@@ -54,7 +62,6 @@ const RobotModel = memo(function RobotModel() {
 
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.45;
       groupRef.current.position.y = Math.sin(state.clock.elapsedTime * 1.5) * 0.15;
     }
   });
@@ -62,7 +69,7 @@ const RobotModel = memo(function RobotModel() {
   return (
     <group ref={groupRef}>
       <Center>
-        <primitive object={obj} scale={1.1} />
+        <primitive object={obj} scale={1.2} /> {/* Reduced scale to match corner */}
       </Center>
     </group>
   );
@@ -83,7 +90,6 @@ export const BotAvatar = memo(function BotAvatar({ onClick }: BotAvatarProps) {
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log("Robot Clicked!"); // Debugging click
         onClick?.();
       }}
     >
@@ -93,18 +99,30 @@ export const BotAvatar = memo(function BotAvatar({ onClick }: BotAvatarProps) {
         </div>
       }>
         <View className="h-full w-full">
-          <PerspectiveCamera makeDefault position={[0, 0, 15]} fov={20} />
+          <PerspectiveCamera makeDefault position={[0, 0, 14]} fov={22} />
           
-          {/* Crimson Red Contrast Lighting */}
-          <ambientLight intensity={0.4} />
-          <pointLight position={[10, 10, 10]} intensity={15} color="#ff0000" />
-          <pointLight position={[-10, 5, 10]} intensity={10} color="#ff0044" />
-          <spotLight position={[0, 20, 0]} intensity={25} color="#ffffff" angle={0.3} penumbra={1} />
+          <ambientLight intensity={0.1} /> {/* Minimal ambient to avoid washing */}
           
-          <Environment preset="night" />
+          {/* Key Light - Slightly tinted red to boost body color */}
+          <directionalLight position={[5, 10, 5]} intensity={2.5} color="#ffdada" />
+          <pointLight position={[-5, 5, 5]} intensity={1.5} color="#ffffff" />
+          
+          {/* Fill Light */}
+          <pointLight position={[0, -5, 5]} intensity={0.5} color="#ffffff" />
+          
+          {/* Eye Catchlights - Kept crisp white */}
+          <pointLight position={[1, 1, 6]} intensity={3.5} color="#ffffff" distance={15} decay={2} />
+          <pointLight position={[-1, 1, 6]} intensity={3.5} color="#ffffff" distance={15} decay={2} />
+          
+          <Environment preset="studio" />
           
           <RobotModel />
         </View>
+
+
+
+
+
       </Suspense>
     </div>
   );
