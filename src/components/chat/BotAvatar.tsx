@@ -50,9 +50,9 @@ const RobotModel = memo(function RobotModel() {
           roughnessMap: textures.roughnessMap,
           normalMap: textures.normalMap,
           color: "#ffffff", 
-          metalness: 0.0,   // Pure plastic look for maximum color saturation
-          roughness: 0.5,   
-          envMapIntensity: 0.0, // Totally disable environment wash for now
+          metalness: 0.0,   // Pure plastic for solid color
+          roughness: 0.6,   // Slightly rougher to catch light evenly
+          envMapIntensity: 0.05, // Almost no environment wash to avoid blotches
           side: THREE.DoubleSide,
         });
         child.geometry.computeVertexNormals();
@@ -101,11 +101,11 @@ export const BotAvatar = memo(function BotAvatar({ onClick }: BotAvatarProps) {
         <View className="h-full w-full">
           <PerspectiveCamera makeDefault position={[0, 0, 14]} fov={22} />
           
-          <ambientLight intensity={0.1} /> {/* Minimal ambient to avoid washing */}
+          <ambientLight intensity={0.4} /> 
           
-          {/* Key Light - Slightly tinted red to boost body color */}
-          <directionalLight position={[5, 10, 5]} intensity={2.5} color="#ffdada" />
-          <pointLight position={[-5, 5, 5]} intensity={1.5} color="#ffffff" />
+          {/* Balanced lights for clear color */}
+          <directionalLight position={[5, 10, 5]} intensity={1.5} color="#ffffff" />
+          <pointLight position={[-5, 5, 5]} intensity={1.0} color="#ffffff" />
           
           {/* Fill Light */}
           <pointLight position={[0, -5, 5]} intensity={0.5} color="#ffffff" />

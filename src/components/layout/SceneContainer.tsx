@@ -8,7 +8,8 @@ export function SceneContainer() {
   return (
     <div className="fixed inset-0 z-[100] pointer-events-none">
       <Canvas
-        className="h-full w-full"
+        className="h-full w-full pointer-events-none"
+        style={{ pointerEvents: 'none' }}
         shadows={false}
         dpr={[1, 2]}
         gl={{
@@ -19,7 +20,7 @@ export function SceneContainer() {
           depth: true,
           precision: "highp",
           toneMapping: 4, // ACESFilmicToneMapping
-          toneMappingExposure: 0.4, // Extremely low to force deep saturation
+          toneMappingExposure: 0.6, // Balanced for visibility without washing out colors
         }}
       >
         <Suspense fallback={null}>

@@ -6,12 +6,13 @@ import { SkillRadar } from "@/components/expertise/SkillRadar";
 import { InsightsGrid } from "@/components/insights/InsightsGrid";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
 import { ContactForm } from "@/components/contact/ContactForm";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight, Mail } from "lucide-react";
 import Link from "next/link";
 
 import { Magnetic } from "@/components/ui/magnetic";
 
+import { cn } from "@/lib/utils";
 import { SectionReveal } from "@/components/layout/SectionReveal";
 
 export default function Home() {
@@ -25,13 +26,25 @@ export default function Home() {
         <div className="z-10 flex flex-col items-center gap-24 mt-48 px-4">
           <TypingHeadline />
           
-          <div className="flex flex-col sm:flex-row gap-8 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-[2000ms] fill-mode-backwards">
-            <Button size="lg" className="rounded-full px-12 py-8 text-xl font-bold bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_0_40px_rgba(0,240,255,0.3)] transition-all">
+          <div className="flex flex-col sm:flex-row gap-8 mb-20 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-[2000ms] fill-mode-backwards relative z-20">
+            <Link 
+              href="/#about" 
+              className={cn(
+                buttonVariants({ variant: "default", size: "lg" }),
+                "rounded-full px-12 py-8 text-xl font-bold shadow-[0_0_40px_rgba(0,240,255,0.3)] transition-all w-full sm:w-auto flex items-center justify-center bg-primary text-primary-foreground hover:bg-primary/90"
+              )}
+            >
               Explore the magic <ArrowRight className="ml-3 w-6 h-6" />
-            </Button>
-            <Button size="lg" variant="outline" className="rounded-full px-12 py-8 text-xl font-bold border-white/10 hover:bg-white/5 backdrop-blur-md">
+            </Link>
+            <Link 
+              href="/#contact" 
+              className={cn(
+                buttonVariants({ variant: "outline", size: "lg" }),
+                "rounded-full px-12 py-8 text-xl font-bold border-white/10 hover:bg-white/5 backdrop-blur-md w-full sm:w-auto flex items-center justify-center"
+              )}
+            >
               <Mail className="mr-3 w-6 h-6" /> Let&apos;s build legendary
-            </Button>
+            </Link>
           </div>
         </div>
         

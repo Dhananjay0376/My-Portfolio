@@ -43,7 +43,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} antialiased`} suppressHydrationWarning>
         <ThemeProvider
           attribute="class"
@@ -53,10 +53,10 @@ export default function RootLayout({
         >
           <SceneContainer />
           <AmbientCanvas />
+          <FloatingNav />
+          <ScrollProgress />
           <SmoothScroll>
             <div className="relative z-10 min-h-screen">
-              <FloatingNav />
-              <ScrollProgress />
               {children}
             </div>
           </SmoothScroll>
