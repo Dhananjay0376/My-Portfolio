@@ -1,24 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { MapPin } from "lucide-react";
+import { Globe } from "lucide-react";
 
 export function FloatingBadge() {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, delay: 4, type: "spring", bounce: 0.5 }}
-      className="absolute top-8 right-8 z-20 hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_0_20px_rgba(180,100,255,0.15)]"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 1, delay: 2, ease: "easeOut" }}
+      className="absolute top-10 right-10 z-20 hidden lg:flex items-center gap-4 p-1 pr-6 rounded-full glass-card border-white/5 shadow-2xl"
     >
-      <div className="relative flex h-3 w-3 items-center justify-center">
-        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-        <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+      <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20">
+        <Globe className="w-5 h-5 text-primary animate-pulse" />
       </div>
-      <MapPin className="w-4 h-4 text-muted-foreground" />
-      <span className="text-sm font-medium text-foreground">
-        Currently in Mathura <span className="text-muted-foreground mx-1">&bull;</span> Open to wild projects
-      </span>
+      <div className="flex flex-col">
+        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80 leading-none">Status</span>
+        <span className="text-xs font-bold text-white tracking-tight">Available for high-stakes missions</span>
+      </div>
+      <div className="flex gap-1 ml-2">
+        <div className="w-1 h-1 rounded-full bg-primary" />
+        <div className="w-1 h-1 rounded-full bg-primary/40" />
+        <div className="w-1 h-1 rounded-full bg-primary/20" />
+      </div>
     </motion.div>
   );
 }

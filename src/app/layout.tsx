@@ -4,6 +4,10 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AskSolutionBuilder } from "@/components/chat/AskSolutionBuilder";
 import { ScrollProgress } from "@/components/ui/scroll-progress";
+import { SmoothScroll } from "@/components/layout/SmoothScroll";
+import { AmbientCanvas } from "@/components/layout/AmbientCanvas";
+import { FloatingNav } from "@/components/layout/FloatingNav";
+import { CustomCursor } from "@/components/layout/CustomCursor";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -12,38 +16,23 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: "Solution Builder | Premium Full-Stack Portfolio",
+    default: "Solution Builder | Architectural Mastery",
     template: "%s | Solution Builder",
   },
-  description: "I turn complex ideas into production-ready web apps, real-time systems, and AI-powered tools. Exploring the intersection of design and high-performance engineering.",
-  keywords: ["Full-stack Developer", "Next.js 15", "React Three Fiber", "AI Solution Builder", "Greater Noida Developer"],
-  authors: [{ name: "Solution Builder" }],
-  creator: "Solution Builder",
+  description: "I engineer high-performance systems and cinematic digital experiences that redefine the boundaries of the web.",
+  keywords: ["Full-stack Developer", "Next.js 15", "Architect", "AI Systems", "WebGL"],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "https://your-portfolio.com",
     siteName: "Solution Builder Portfolio",
-    title: "Solution Builder | Premium Full-Stack Portfolio",
-    description: "I turn complex ideas into production-ready web apps, real-time systems, and AI-powered tools.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Solution Builder Portfolio",
-      },
-    ],
+    title: "Solution Builder | Architectural Mastery",
+    description: "Engineering high-performance systems and cinematic digital experiences.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Solution Builder | Premium Full-Stack Portfolio",
-    description: "I turn complex ideas into production-ready web apps, real-time systems, and AI-powered tools.",
-    images: ["/og-image.png"],
-  },
-  robots: {
-    index: true,
-    follow: true,
+    title: "Solution Builder | Architectural Mastery",
+    description: "Engineering high-performance systems and cinematic digital experiences.",
   },
 };
 
@@ -53,19 +42,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen overflow-x-hidden`}
-      >
+    <html lang="en" suppressHydrationWarning className="dark">
+      <body className={`${inter.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ScrollProgress />
-          {children}
-          <AskSolutionBuilder />
+          <SmoothScroll>
+            <AmbientCanvas />
+            <FloatingNav />
+            <CustomCursor />
+            <ScrollProgress />
+            {children}
+            <AskSolutionBuilder />
+          </SmoothScroll>
         </ThemeProvider>
       </body>
     </html>

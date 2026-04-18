@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { ArrowUpRight, Loader2 } from "lucide-react";
+import { ArrowUpRight, Loader2, Code, Link as LinkIcon } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { Magnetic } from "@/components/ui/magnetic";
 
 export interface Project {
   slug: string;
@@ -68,6 +68,89 @@ export const projectsData: Project[] = [
   },
 ];
 
+function ProjectCard({ project, index }: { project: Project, index: number }) {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  const mouseXSpring = useSpring(x);
+  const mouseYSpring = useSpring(y);
+
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+      className="group relative h-[450px] w-full perspective cursor-none"
+    >
+      <div 
+        style={{ transform: "translateZ(50px)" }}
+        className="absolute inset-0 rounded-[2.5rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/30 transition-all duration-700 shadow-2xl"
+      >
+        <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-700`} />
+        
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 p-8">
+          <Magnetic>
+            <Link href={`/projects/${project.slug}`}>
+              <div className="w-12 h-12 rounded-full glass border-white/10 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
+                <ArrowUpRight className="w-6 h-6" />
+              </div>
+            </Link>
+          </Magnetic>
+        </div>
+
+        <div 
+          style={{ transform: "translateZ(100px)" }}
+          className="absolute inset-0 p-10 flex flex-col justify-end gap-6 pointer-events-none"
+        >
+          <div className="space-y-2 pointer-events-auto">
+            <span className="text-[0.6rem] uppercase tracking-[0.4em] font-mono text-primary/80 font-bold">{project.category}</span>
+            <h3 className="text-4xl font-black tracking-tighter text-white leading-none">{project.title}</h3>
+            <p className="text-muted-foreground/80 text-sm font-light leading-relaxed max-w-[85%]">{project.tagline}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-2 pointer-events-auto">
+            {project.tech.slice(0, 3).map((t) => (
+              <Badge key={t} variant="outline" className="border-white/5 bg-white/5 text-[10px] text-white/60 backdrop-blur-md uppercase tracking-widest px-3 py-1">
+                {t}
+              </Badge>
+            ))}
+          </div>
+
+          <div className="flex flex-col gap-1 pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+            {project.metrics.map(m => (
+              <span key={m} className="text-[10px] font-mono text-secondary/80">▸ {m}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 const categories = ["All", "Web Apps", "E-commerce", "AI & Automation", "Real-time"];
 
 export function ProjectGrid() {
@@ -84,11 +167,9 @@ export function ProjectGrid() {
           .order('created_at', { ascending: false });
 
         if (error) throw error;
-
         if (data && data.length > 0) {
           setProjects(data);
         } else {
-          // Fallback to static data if DB is empty
           setProjects(projectsData);
         }
       } catch (err) {
@@ -98,7 +179,6 @@ export function ProjectGrid() {
         setLoading(false);
       }
     }
-
     fetchProjects();
   }, []);
 
@@ -108,80 +188,36 @@ export function ProjectGrid() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <Loader2 className="w-10 h-10 text-primary animate-spin" />
-        <p className="text-muted-foreground animate-pulse">Syncing with solution vault...</p>
+      <div className="flex flex-col items-center justify-center py-40 gap-6">
+        <Loader2 className="w-12 h-12 text-primary animate-spin" />
+        <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest animate-pulse">Synchronizing with system archive...</p>
       </div>
     );
   }
 
   return (
-    <div className="w-full">
-      {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+    <div className="w-full space-y-20">
+      <div className="flex flex-wrap items-center justify-center gap-4">
         {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setFilter(cat)}
-            className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-              filter === cat
-                ? "bg-primary text-primary-foreground shadow-[0_0_15px_rgba(0,240,255,0.4)]"
-                : "bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-white"
-            }`}
-          >
-            {cat}
-          </button>
+          <Magnetic key={cat}>
+            <button
+              onClick={() => setFilter(cat)}
+              className={`px-8 py-3 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] transition-all duration-500 border ${
+                filter === cat
+                  ? "bg-primary text-primary-foreground border-primary shadow-[0_0_30px_rgba(0,240,255,0.4)]"
+                  : "bg-white/5 text-muted-foreground border-white/5 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              {cat}
+            </button>
+          </Magnetic>
         ))}
       </div>
 
-      {/* Grid */}
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         <AnimatePresence mode="popLayout">
-          {filteredProjects.map((project) => (
-            <motion.div
-              key={project.slug}
-              layout
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.9 }}
-              transition={{ duration: 0.4, type: "spring", bounce: 0.3 }}
-              className="group perspective"
-            >
-              <Link href={`/projects/${project.slug}`}>
-                <Card className="h-full bg-black/40 border-white/5 overflow-hidden backdrop-blur-sm transition-all duration-500 hover:-translate-y-2 hover:border-primary/50 hover:shadow-[0_20px_40px_-15px_rgba(0,240,255,0.2)] preserve-3d group-hover:rotate-x-2 group-hover:rotate-y-[-2deg]">
-                  <div className={`h-48 w-full bg-gradient-to-br ${project.gradient} relative overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                    {/* Abstract placeholder */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 border border-white/20 rounded-full group-hover:scale-110 transition-transform duration-700" />
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/10 rounded border border-white/20 rotate-45 group-hover:rotate-90 transition-transform duration-700" />
-                  </div>
-                  
-                  <CardContent className="pt-6 relative z-10 bg-black/40">
-                    <div className="flex items-start justify-between mb-2">
-                      <h3 className="text-xl font-bold group-hover:text-primary transition-colors">{project.title}</h3>
-                      <ArrowUpRight className="w-5 h-5 opacity-0 -translate-y-2 translate-x-2 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-primary" />
-                    </div>
-                    <p className="text-muted-foreground text-sm mb-4">{project.tagline}</p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tech.map(t => (
-                        <Badge key={t} variant="outline" className="border-white/10 bg-white/5 text-xs text-white/80">
-                          {t}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                  
-                  <CardFooter className="pt-0 bg-black/40 border-t border-white/5 mt-auto flex items-center justify-between">
-                    <div className="flex flex-col gap-1 mt-4">
-                      {project.metrics.map(m => (
-                        <span key={m} className="text-xs font-semibold text-secondary">✓ {m}</span>
-                      ))}
-                    </div>
-                  </CardFooter>
-                </Card>
-              </Link>
-            </motion.div>
+          {filteredProjects.map((project, index) => (
+            <ProjectCard key={project.slug} project={project} index={index} />
           ))}
         </AnimatePresence>
       </motion.div>

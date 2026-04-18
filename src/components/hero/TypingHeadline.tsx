@@ -1,56 +1,33 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
-
-const text = "I don't just code. I build solutions that make clients say ";
-const highlightText = '"this changes everything."';
+import { TextScramble } from "@/components/ui/TextScramble";
 
 export function TypingHeadline() {
-  const [isTypingComplete, setIsTypingComplete] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsTypingComplete(true);
-    }, text.length * 50 + 500); // Rough estimate for typing completion
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="z-10 text-center flex flex-col items-center gap-6 px-4">
-      <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-5xl leading-tight">
-        {text.split("").map((char, index) => (
-          <motion.span
-            key={`char-${index}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.1,
-              delay: index * 0.05,
-              ease: "easeIn",
-            }}
-          >
-            {char}
-          </motion.span>
-        ))}
-        {isTypingComplete && (
-          <motion.span
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary inline-block drop-shadow-[0_0_15px_rgba(180,100,255,0.5)]"
-          >
-            {highlightText}
-          </motion.span>
-        )}
-      </h1>
+    <div className="z-10 text-center flex flex-col items-center gap-10">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+        className="space-y-4"
+      >
+        <h2 className="text-[0.6rem] uppercase tracking-[0.6em] font-mono text-primary font-black">
+          System Architect & Solution Engineer
+        </h2>
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter leading-[0.8] max-w-6xl">
+          <TextScramble text="ENGINEERING" duration={1.5} className="block" />
+          <TextScramble text="THE FUTURE" duration={2} className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20" />
+        </h1>
+      </motion.div>
+
       <motion.p
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 3.5 }}
-        className="text-xl md:text-2xl text-muted-foreground max-w-2xl font-medium"
+        transition={{ duration: 1, delay: 1.5, ease: "easeOut" }}
+        className="text-xl md:text-2xl text-muted-foreground/60 max-w-2xl font-light leading-relaxed tracking-wide"
       >
-        Full-stack solution builder &bull; Real-time systems &bull; AI-powered tools &bull; E-commerce that actually sells
+        I translate complex institutional challenges into <span className="text-white font-medium">high-performance digital systems</span> with sub-millisecond precision.
       </motion.p>
     </div>
   );
