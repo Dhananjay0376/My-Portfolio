@@ -1,6 +1,9 @@
 import { HeroCanvas } from "@/components/hero/HeroCanvas";
 import { TypingHeadline } from "@/components/hero/TypingHeadline";
 import { FloatingBadge } from "@/components/hero/FloatingBadge";
+import { NarrativeTimeline } from "@/components/about/NarrativeTimeline";
+import { SkillRadar } from "@/components/expertise/SkillRadar";
+import { InsightsGrid } from "@/components/insights/InsightsGrid";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Mail } from "lucide-react";
 
@@ -31,28 +34,61 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Other sections scaffold */}
-      <section id="about" className="min-h-screen w-full py-20 relative z-10 bg-background">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-primary">About Me</h2>
+      {/* About Section */}
+      <section id="about" className="min-h-screen w-full py-32 relative z-10 bg-background overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="container mx-auto px-4 relative">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">My Journey</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">From writing my first line of code to architecting planetary-scale systems.</p>
+          </div>
+          <NarrativeTimeline />
         </div>
       </section>
 
-      <section id="projects" className="min-h-screen w-full py-20 bg-muted/20 relative z-10">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-primary">Case Studies</h2>
+      {/* Expertise Section */}
+      <section id="expertise" className="min-h-screen w-full py-32 relative z-10 bg-black overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-secondary/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="container mx-auto px-4 relative z-10">
+          <SkillRadar />
         </div>
       </section>
 
-      <section id="expertise" className="min-h-screen w-full py-20 relative z-10 bg-background">
+      {/* Projects Scaffold */}
+      <section id="projects" className="min-h-screen w-full py-32 bg-background relative z-10 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-primary">Expertise</h2>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">Selected Works</h2>
+            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Case studies of solutions that moved the needle.</p>
+          </div>
+          {/* Phase 4 Component will go here */}
+        </div>
+      </section>
+
+      {/* Insights Section */}
+      <section id="insights" className="min-h-screen w-full py-32 relative z-10 bg-black overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">Insights</h2>
+              <p className="text-muted-foreground text-lg max-w-xl">Thoughts, tutorials, and deep dives into modern web development and architecture.</p>
+            </div>
+            <Button variant="outline" className="border-white/10 hover:bg-white/5">
+              View all articles <ArrowRight className="w-4 h-4 ml-2" />
+            </Button>
+          </div>
+          <InsightsGrid />
         </div>
       </section>
       
-      <section id="contact" className="min-h-[50vh] w-full py-20 bg-muted/20 relative z-10">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold mb-8 text-primary">Connect</h2>
+      {/* Contact Scaffold */}
+      <section id="contact" className="min-h-[50vh] w-full py-32 bg-background relative z-10">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-8 text-primary">Connect</h2>
         </div>
       </section>
     </main>
