@@ -35,7 +35,7 @@ export function TypingHeadline() {
         transition={{ duration: 1.5, delay: 1, ease: "easeOut" }}
         className="text-xl md:text-2xl text-muted-foreground/50 max-w-2xl font-light leading-relaxed tracking-wide italic"
       >
-        &quot;We don&apos;t just build apps. We engineer <span className="text-white font-medium not-italic">digital ecosystems</span> that defy institutional complexity.&quot;
+        &quot;We don&apos;t just build apps. We engineer <span className="text-white font-medium not-italic">digital ecosystems </span> that defy institutional complexity.&quot;
       </motion.p>
     </div>
   );

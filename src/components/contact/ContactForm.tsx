@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Send, Code, Briefcase, Mail, Link as LinkIcon } from "lucide-react";
+import { Send, Mail, Code, Briefcase, Link as LinkIcon } from "lucide-react";
+import { GithubIcon, LinkedinIcon, XIcon } from "@/components/ui/icons";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,9 +22,9 @@ export function ContactForm() {
   };
 
   const socials = [
-    { icon: <Code className="w-5 h-5" />, link: "#", label: "GitHub" },
-    { icon: <Briefcase className="w-5 h-5" />, link: "#", label: "LinkedIn" },
-    { icon: <LinkIcon className="w-5 h-5" />, link: "#", label: "Twitter" },
+    { icon: <GithubIcon className="w-5 h-5" />, link: "https://github.com/Dhananjay0376/", label: "GitHub" },
+    { icon: <LinkedinIcon className="w-5 h-5" />, link: "https://linkedin.com/in/dhananjay-narula-6519363a1/", label: "LinkedIn" },
+    { icon: <XIcon className="w-5 h-5" />, link: "https://x.com/Dhananjay0376", label: "X (Twitter)" },
     { icon: <Mail className="w-5 h-5" />, link: "mailto:hello@example.com", label: "Email" },
   ];
 

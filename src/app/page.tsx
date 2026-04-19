@@ -2,6 +2,8 @@ import { HeroCanvas } from "@/components/hero/HeroCanvas";
 import { TypingHeadline } from "@/components/hero/TypingHeadline";
 import { FloatingBadge } from "@/components/hero/FloatingBadge";
 import { NarrativeTimeline } from "@/components/about/NarrativeTimeline";
+import { ProfileCard } from "@/components/about/ProfileCard";
+import { AchievementGrid } from "@/components/about/AchievementGrid";
 import { SkillRadar } from "@/components/expertise/SkillRadar";
 import { InsightsGrid } from "@/components/insights/InsightsGrid";
 import { ProjectGrid } from "@/components/projects/ProjectGrid";
@@ -63,7 +65,16 @@ export default function Home() {
               <h2 className="text-6xl md:text-8xl font-black mb-10 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/30 tracking-tighter">THE JOURNEY</h2>
               <p className="text-muted-foreground/50 text-2xl max-w-2xl mx-auto font-light leading-relaxed tracking-wide italic">Tracing the evolution of a system architect.</p>
             </div>
+
+            <div className="mb-32">
+              <ProfileCard />
+            </div>
+
             <NarrativeTimeline />
+
+            <div className="mt-20">
+              <AchievementGrid />
+            </div>
           </div>
         </SectionReveal>
       </section>
