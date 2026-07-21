@@ -10,12 +10,16 @@ export const revalidate = 3600; // revalidate every hour
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   
-  // Try fetching from Supabase
-  const { data: projectFromDB } = await supabase
-    .from('projects')
-    .select('*')
-    .eq('slug', resolvedParams.slug)
-    .single();
+  // Try fetching from Supabase if configured
+  let projectFromDB = null;
+  if (supabase) {
+    const { data } = await supabase
+      .from('projects')
+      .select('*')
+      .eq('slug', resolvedParams.slug)
+      .single();
+    projectFromDB = data;
+  }
 
   const project = (projectFromDB as Project) || projectsData.find((p) => p.slug === resolvedParams.slug);
 
