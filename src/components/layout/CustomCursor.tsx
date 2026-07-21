@@ -60,7 +60,7 @@ export function CustomCursor() {
           width: hoverType !== "none" ? 80 : 40,
           height: hoverType !== "none" ? 80 : 40,
           opacity: hoverType !== "none" ? 1 : 0.5,
-          backgroundColor: hoverType !== "none" ? "rgba(0, 240, 255, 0.05)" : "rgba(0, 240, 255, 0)",
+          backgroundColor: hoverType !== "none" ? "rgba(74, 127, 181, 0.08)" : "rgba(74, 127, 181, 0)",
         }}
         style={{
           x: cursorX,

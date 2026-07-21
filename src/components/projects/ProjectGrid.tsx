@@ -29,7 +29,7 @@ export const projectsData: Project[] = [
     category: "E-commerce",
     tech: ["Next.js", "Stripe", "PostgreSQL", "Three.js"],
     metrics: ["+45% Conversion", "<1s Load Time"],
-    gradient: "from-amber-500/20 to-orange-700/20",
+    gradient: "from-amber-300/25 to-rose-300/20",
   },
   {
     slug: "realtime-organizer",
@@ -38,7 +38,7 @@ export const projectsData: Project[] = [
     category: "Real-time",
     tech: ["React", "WebSockets", "Redis", "Node.js"],
     metrics: ["10k+ active users", "0ms perceived lag"],
-    gradient: "from-blue-500/20 to-cyan-700/20",
+    gradient: "from-sky-300/25 to-cyan-400/20",
   },
   {
     slug: "ai-content-generator",
@@ -47,7 +47,7 @@ export const projectsData: Project[] = [
     category: "AI & Automation",
     tech: ["OpenAI", "Supabase", "Next.js", "Vercel AI"],
     metrics: ["100x Faster Output", "Auto-posting API"],
-    gradient: "from-purple-500/20 to-pink-700/20",
+    gradient: "from-teal-300/25 to-sky-400/20",
   },
   {
     slug: "customer-management",
@@ -56,7 +56,7 @@ export const projectsData: Project[] = [
     category: "Web Apps",
     tech: ["React", "Tailwind", "GraphQL", "Prisma"],
     metrics: ["99.99% Uptime", "HIPAA Compliant"],
-    gradient: "from-emerald-500/20 to-teal-700/20",
+    gradient: "from-emerald-300/25 to-lime-300/20",
   },
   {
     slug: "memory-universe",
@@ -65,7 +65,7 @@ export const projectsData: Project[] = [
     category: "Web Apps",
     tech: ["Three.js", "R3F", "Framer Motion", "Zustand"],
     metrics: ["60fps Mobile", "WebXR Ready"],
-    gradient: "from-indigo-500/20 to-violet-700/20",
+    gradient: "from-sky-400/25 to-violet-300/20",
   },
 ];
 
@@ -137,17 +137,15 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
           scale: isHovered ? 1 : 0,
         }}
       >
-        <div className="bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.3em] px-6 py-3 rounded-full shadow-[0_0_40px_rgba(0,240,255,0.6)]">
+        <div className="bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-[0.3em] px-6 py-3 rounded-full shadow-[0_0_30px_rgba(74,127,181,0.4)]">
           Explore
         </div>
       </motion.div>
 
       <div 
         style={{ transform: "translateZ(50px)" }}
-        className="absolute inset-0 rounded-[4rem] overflow-hidden glass-card border-white/5 group-hover:border-primary/40 transition-all duration-700 shadow-2xl"
+        className="absolute inset-0 rounded-[4rem] overflow-hidden glass-card border-border group-hover:border-primary/40 transition-all duration-700 shadow-xl"
       >
-        {/* Grain Overlay handled by global .glass-card */}
-
         {/* Dynamic Light Flare */}
         <motion.div
           className="absolute -inset-px rounded-[4rem] z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -157,17 +155,17 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
               ([xVal, yVal]) => {
                 const posX = (xVal as number + 0.5) * 100;
                 const posY = (yVal as number + 0.5) * 100;
-                return `radial-gradient(800px circle at ${posX}% ${posY}%, rgba(0, 240, 255, 0.2), transparent 50%)`;
+                return `radial-gradient(800px circle at ${posX}% ${posY}%, rgba(74, 127, 181, 0.15), transparent 50%)`;
               }
             ),
           }}
         />
 
-        <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-20 group-hover:opacity-40 transition-opacity duration-1000`} />
+        <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-40 group-hover:opacity-60 transition-opacity duration-1000`} />
         
         {/* Corner Accents */}
-        <div className="absolute top-12 left-12 w-12 h-12 border-t-2 border-l-2 border-white/10 rounded-tl-2xl group-hover:border-primary/40 transition-colors" />
-        <div className="absolute bottom-12 right-12 w-12 h-12 border-b-2 border-r-2 border-white/10 rounded-br-2xl group-hover:border-primary/40 transition-colors" />
+        <div className="absolute top-12 left-12 w-12 h-12 border-t-2 border-l-2 border-primary/20 rounded-tl-2xl group-hover:border-primary/50 transition-colors" />
+        <div className="absolute bottom-12 right-12 w-12 h-12 border-b-2 border-r-2 border-primary/20 rounded-br-2xl group-hover:border-primary/50 transition-colors" />
 
         <div 
           style={{ transform: "translateZ(120px)" }}
@@ -175,17 +173,19 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
         >
           <div className="space-y-6 pointer-events-auto">
             <div className="flex items-center gap-4">
-              <span className="text-[0.7rem] uppercase tracking-[0.8em] font-mono text-primary font-black">{project.category}</span>
-              <div className="h-px flex-1 bg-gradient-to-r from-primary/20 to-transparent" />
+              <span className="glass-card text-[0.7rem] uppercase tracking-[0.8em] font-mono text-primary font-black px-4 py-1.5 rounded-full border border-primary/30 backdrop-blur-md bg-white/50 dark:bg-[#0C1222]/60 shadow-sm">{project.category}</span>
+              <div className="h-px flex-1 bg-gradient-to-r from-primary/30 to-transparent" />
             </div>
-            <h3 className="text-5xl md:text-6xl font-black tracking-tighter text-white leading-[0.9] uppercase group-hover:translate-x-2 transition-transform duration-700">{project.title}</h3>
-            <p className="text-muted-foreground/60 text-lg font-light leading-relaxed max-w-[85%] italic">{project.tagline}</p>
+            <h3 className="text-5xl md:text-6xl font-black tracking-tighter text-foreground leading-[0.9] uppercase group-hover:translate-x-2 transition-transform duration-700">{project.title}</h3>
+            <div className="glass-card p-5 rounded-2xl backdrop-blur-md bg-white/40 dark:bg-[#0C1222]/50 border border-white/40 dark:border-sky-300/10 max-w-[85%]">
+              <p className="text-slate-800 dark:text-slate-200 text-base md:text-lg font-medium leading-relaxed italic">{project.tagline}</p>
+            </div>
           </div>
 
           <div className="flex items-center justify-between pointer-events-auto">
             <div className="flex flex-wrap gap-3">
               {project.tech.slice(0, 3).map((t) => (
-                <Badge key={t} variant="outline" className="border-white/10 bg-white/5 text-[10px] text-white/80 backdrop-blur-xl uppercase tracking-widest px-4 py-1.5 rounded-full">
+                <Badge key={t} variant="outline" className="glass-card border-white/40 dark:border-sky-300/20 bg-white/50 dark:bg-[#0C1222]/60 text-[10px] text-slate-800 dark:text-slate-200 backdrop-blur-md uppercase tracking-widest px-4 py-1.5 rounded-full font-mono shadow-sm">
                   {t}
                 </Badge>
               ))}
@@ -193,8 +193,8 @@ function ProjectCard({ project, index }: { project: Project, index: number }) {
             
             <div className="flex flex-col items-end gap-2 opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">
               {project.metrics.map(m => (
-                <span key={m} className="text-[11px] font-mono text-secondary font-bold tracking-tighter">
-                  <span className="text-primary/40 mr-2">/</span> {m}
+                <span key={m} className="glass-card px-3 py-1 rounded-full border border-secondary/30 bg-secondary/10 backdrop-blur-md text-[11px] font-mono text-secondary font-bold tracking-tighter shadow-sm">
+                  {m}
                 </span>
               ))}
             </div>
@@ -215,6 +215,12 @@ export function ProjectGrid() {
   useEffect(() => {
     async function fetchProjects() {
       try {
+        if (!supabase) {
+          setProjects(projectsData);
+          setLoading(false);
+          return;
+        }
+
         const { data, error } = await supabase
           .from('projects')
           .select('*')
@@ -257,10 +263,10 @@ export function ProjectGrid() {
             <button
               onClick={() => setFilter(cat)}
               className={cn(
-                "px-10 py-4 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-700 border",
+                "px-8 py-3.5 rounded-full text-[10px] font-black uppercase tracking-[0.3em] transition-all duration-500 border backdrop-blur-md shadow-md",
                 filter === cat
-                  ? "bg-primary text-primary-foreground border-primary shadow-[0_0_50px_rgba(0,240,255,0.4)]"
-                  : "bg-white/5 text-muted-foreground border-white/10 hover:bg-white/10 hover:text-white"
+                  ? "glass-card bg-primary text-primary-foreground border-primary shadow-[0_0_30px_rgba(74,127,181,0.4)]"
+                  : "glass-card bg-white/40 dark:bg-[#0C1222]/50 text-slate-700 dark:text-slate-300 border-white/40 dark:border-sky-300/10 hover:bg-white/70 dark:hover:bg-[#0C1222]/80"
               )}
             >
               {cat}

@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-
 import { Home, User, Cpu, Briefcase, Mail } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 
 export function FloatingNav() {
   const { scrollY } = useScroll();
@@ -67,33 +68,33 @@ export function FloatingNav() {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         className={cn(
           "fixed top-8 left-1/2 -translate-x-1/2 z-[100] flex items-center gap-2 p-2 rounded-full transition-all duration-700",
-          scrolled ? "glass-card px-8 py-4 scale-100" : "bg-transparent scale-110"
+          scrolled ? "glass-card px-8 py-4 scale-100" : "bg-card/40 backdrop-blur-md px-6 py-3 border border-border scale-100"
         )}
       >
         <Link href="/">
           <div className={cn(
             "w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 relative group overflow-hidden",
             activeSection === "hero" 
-              ? "bg-primary text-primary-foreground shadow-[0_0_30px_rgba(0,240,255,0.4)]" 
-              : "bg-white/5 text-muted-foreground/60 hover:text-white"
+              ? "bg-primary text-primary-foreground shadow-[0_0_20px_rgba(74,127,181,0.4)]" 
+              : "bg-primary/10 text-muted-foreground hover:text-foreground"
           )}>
             <Home className="w-5 h-5 z-10" />
             <motion.div 
-              className="absolute inset-0 bg-white opacity-0 group-hover:opacity-20 transition-opacity" 
+              className="absolute inset-0 bg-primary opacity-0 group-hover:opacity-20 transition-opacity" 
             />
           </div>
         </Link>
 
-        <div className="h-4 w-px bg-white/10 mx-3" />
+        <div className="h-4 w-px bg-border mx-2" />
 
         <div className="flex items-center gap-2">
           {navItems.map((item) => (
             <Link key={item.name} href={item.href} className="relative group">
               <div className={cn(
-                "px-5 py-2 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-3",
+                "px-4 py-2 rounded-full text-xs font-black uppercase tracking-[0.2em] transition-all duration-500 flex items-center gap-3",
                 activeSection === item.id 
-                  ? "text-primary bg-primary/5" 
-                  : "text-muted-foreground/60 hover:text-white"
+                  ? "text-primary bg-primary/10" 
+                  : "text-muted-foreground hover:text-foreground"
               )}>
                 <span className="hidden lg:inline">{item.name}</span>
                 <span>{item.icon}</span>
@@ -101,13 +102,17 @@ export function FloatingNav() {
               {activeSection === item.id && (
                 <motion.div
                   layoutId="activeNav"
-                  className="absolute inset-0 border border-primary/20 rounded-full"
+                  className="absolute inset-0 border border-primary/30 rounded-full"
                   transition={{ type: "spring", stiffness: 380, damping: 30 }}
                 />
               )}
             </Link>
           ))}
         </div>
+
+        <div className="h-4 w-px bg-border mx-2" />
+
+        <ThemeToggle />
       </motion.nav>
     </AnimatePresence>
   );

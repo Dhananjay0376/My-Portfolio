@@ -38,7 +38,7 @@ export function NarrativeTimeline() {
   return (
     <div ref={containerRef} className="relative max-w-6xl mx-auto py-20 px-4">
       {/* Central Line */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-white/5 -translate-x-1/2">
+      <div className="absolute left-1/2 top-0 bottom-0 w-px bg-primary/10 -translate-x-1/2">
         <motion.div
           className="w-full bg-gradient-to-b from-primary via-secondary to-primary origin-top"
           style={{ scaleY: pathLength }}
@@ -51,7 +51,7 @@ export function NarrativeTimeline() {
           return (
             <div key={event.year} className={`relative flex flex-col md:flex-row items-center gap-12 ${!isEven ? "md:flex-row-reverse" : ""}`}>
               {/* Year Badge */}
-              <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-full bg-background border border-white/10 z-20 group">
+              <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-full glass-card border-white/40 dark:border-sky-300/20 bg-white/50 dark:bg-[#0C1222]/70 backdrop-blur-md z-20 group shadow-xl">
                 <div className="absolute inset-2 rounded-full border border-primary/20 group-hover:border-primary transition-colors duration-500" />
                 <span className="text-sm font-mono font-black tracking-tighter text-primary">{event.year}</span>
               </div>
@@ -62,13 +62,15 @@ export function NarrativeTimeline() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                  className="w-full md:w-[85%] glass-card p-10 rounded-3xl border-white/5 relative group hover:border-primary/20 transition-all duration-700"
+                  className="w-full md:w-[85%] glass-card p-10 rounded-3xl border-white/40 dark:border-sky-300/20 bg-white/60 dark:bg-[#0C1222]/75 backdrop-blur-md relative group hover:border-primary/40 transition-all duration-700 shadow-xl"
                 >
                   <div className="absolute top-4 left-4 w-2 h-2 border-t border-l border-primary/40" />
                   <div className="absolute bottom-4 right-4 w-2 h-2 border-b border-r border-primary/40" />
                   
-                  <h3 className="text-3xl font-black tracking-tighter text-white mb-4 group-hover:text-primary transition-colors">{event.title}</h3>
-                  <p className="text-muted-foreground font-light leading-relaxed">{event.description}</p>
+                  <h3 className="text-3xl font-black tracking-tighter text-foreground mb-4 group-hover:text-primary transition-colors">{event.title}</h3>
+                  <div className="glass-card p-4 rounded-2xl backdrop-blur-sm bg-white/40 dark:bg-[#0C1222]/50 border border-white/30 dark:border-sky-300/10">
+                    <p className="text-slate-700 dark:text-slate-300 font-medium text-base leading-relaxed">{event.description}</p>
+                  </div>
                 </motion.div>
               </div>
 
